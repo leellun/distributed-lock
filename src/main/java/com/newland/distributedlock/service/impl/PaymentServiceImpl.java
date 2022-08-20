@@ -43,6 +43,7 @@ public class PaymentServiceImpl implements IPaymentService {
     public String payment2(String account, BigDecimal money, String orderId) {
         boolean lock = false;
         try {
+            //redis 核心原理还是setnx orderId TokenLock 命令方式
             lock = redisTemplate.opsForValue().setIfAbsent(orderId, Token.LOCK);
             log.info("cancelCouponCode是否获取到锁：" + lock);
             if (lock) {
